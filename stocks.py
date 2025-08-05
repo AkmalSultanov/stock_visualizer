@@ -1,6 +1,7 @@
 # STOCK VISUALIZER
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 import yfinance as yf
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
@@ -36,6 +37,11 @@ def button_click():
     stock_symbol = stock_input.get()
     stock = yf.Ticker(stock_symbol.upper())
     stock_historical = stock.history("1mo")
+
+    #Error messagebox 
+    if stock_historical.empty:
+        messagebox.showerror("Invalid Ticker", f"The ticker '{stock_symbol}' is invalid or has no data. Please enter a new ticker")
+        return
 
     x = stock_historical.index
     y = stock_historical["Close"]
