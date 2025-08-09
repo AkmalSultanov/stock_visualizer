@@ -2,6 +2,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from tkinter import *
 import yfinance as yf
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
@@ -36,7 +37,8 @@ toolbar.grid(row=2, column=0, columnspan=3, padx=10, pady=5)
 def button_click():
     stock_symbol = stock_input.get()
     stock = yf.Ticker(stock_symbol.upper())
-    stock_historical = stock.history("1mo")
+    period = clicked.get()
+    stock_historical = stock.history(period=period)
 
     #Error messagebox 
     if stock_historical.empty:
@@ -61,5 +63,12 @@ def button_click():
 
 stock_button = ttk.Button(window, text="Visualize Stock", command=button_click)
 stock_button.grid(row=0, column=2, padx=10, pady=10)
+
+clicked = StringVar()
+clicked.set("1mo")
+options = ["5d", "1mo", "3mo", "6mo", "1y"]
+drop = OptionMenu(window, clicked, *options)
+drop.grid(row=0, column=3, padx=10, pady=10)
+
 
 window.mainloop()
